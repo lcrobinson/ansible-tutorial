@@ -1,3 +1,8 @@
-BADC04 apache_package=apache2 php_package=libapache2-mod-php
-RHCSA-LAB apache_package=httpd php_package=php
-RHCSA9-LAB apache_package=httpd php_package=php
+[web_servers]
+RHCSA9-LAB
+
+[db_servers]
+BADC04
+
+[file_servers]
+RHCSA-LAB

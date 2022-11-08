@@ -1,0 +1,71 @@
+---
+
+- hosts: all
+  vars:
+    ansible_python_interpreter: auto
+  become: true
+  pre_tasks:
+
+  - name: Install Updates (Red Hat)
+    dnf:
+      update_only: yes
+      update_cache: yes
+    when: ansible_distribution == "RedHat"
+
+  - name: Install Updates (Ubuntu)
+    apt:
+      upgrade: dist
+      update_cache: yes
+    when: ansible_distribution == "Ubuntu"
+      
+- hosts: web_servers
+  vars:
+    ansible_python_interpreter: auto
+  become: true
+  tasks: 
+
+  - name: Install Apache and PHP for Red Hat Servers
+    dnf:
+      name: 
+        - httpd
+        - php
+      state: latest
+    when: ansible_distribution == "RedHat"
+
+  - name: Install Apache and PHP for Ubuntu Servers
+    dnf:
+      name: 
+        - apache2
+        - libapache2-mod-php
+      state: latest
+    when: ansible_distribution == "Ubuntu"
+- hosts: db_servers
+  vars: 
+    ansible_python_interpreter: auto
+  become: true
+  tasks:
+
+  - name: Install MariaDB package (Red Hat)
+    dnf:
+      name: 
+        - mariadb
+      state: latest
+    when: ansible_distribution == "RedHat"
+
+  - name: Install MariaDB package (Ubuntu)
+    apt:
+      name: 
+        - mariadb-server
+      state: latest
+    when: ansible_distribution == "Ubuntu"
+
+- hosts: file_servers
+  vars: 
+    ansible_python_interpreter: auto
+  become: true
+  tasks:
+
+  - name: Install Samba package on File Servers
+    package:
+      name: samba
+      state: latest
