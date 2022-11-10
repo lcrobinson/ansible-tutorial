@@ -1,8 +1,10 @@
 [web_servers]
-RHCSA9-LAB
 
 [db_servers]
 BADC04
 
 [file_servers]
 RHCSA-LAB
+
+[workstations]
+BADC03

@@ -1,8 +1,6 @@
 ---
 
 - hosts: all
-  vars:
-    ansible_python_interpreter: auto
   become: true
   pre_tasks:
 
@@ -19,10 +17,23 @@
       update_cache: yes
     when: ansible_distribution == "Ubuntu"
     tags: always
+- hosts: workstations
+  become: true
+  tasks:
+  - name: Install unzip
+    package:
+      name: unzip
+
+  - name: Install terraform
+    unarchive:
+      src: https://releases.hashicorp.com/terraform/1.3.4/terraform_1.3.4_linux_amd64.zip
+      dest: /usr/local/bin
+      remote_src: yes
+      owner: root
+      group: root
+      mode: 0755
       
 - hosts: web_servers
-  vars:
-    ansible_python_interpreter: auto
   become: true
   tasks: 
 
@@ -32,6 +43,9 @@
       name: 
         - httpd
         - php
+        - php-pdo 
+        - php-gd
+        - php-mbstring
       state: latest
     when: ansible_distribution == "RedHat"
 
@@ -54,8 +68,6 @@
       mode: 0644
 
 - hosts: db_servers
-  vars: 
-    ansible_python_interpreter: auto
   become: true
   tasks:
 
@@ -76,8 +88,6 @@
     when: ansible_distribution == "Ubuntu"
 
 - hosts: file_servers
-  vars: 
-    ansible_python_interpreter: auto
   become: true
   tasks:
 
