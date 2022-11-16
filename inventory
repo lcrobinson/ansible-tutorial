@@ -1,5 +1,7 @@
 [web_servers]
 ROCKY9-LALB
+BADC05
+RHCSA9-LAB
 
 [db_servers]
 BADC04
