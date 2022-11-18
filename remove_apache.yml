@@ -15,6 +15,15 @@
       update_cache: yes
     when: ansible_distribution == "Ubuntu"
 
+  - name: Remove apache and php for Ubuntu servers
+    apt:
+      name: 
+        - apache2
+        - libapache2-mod-php
+      state: absent
+      update_cache: yes
+    when: ansible_distribution == "Debian"
+
   - name: Remove httpd and php for Red Hat servers
     dnf:
       name: 
@@ -22,4 +31,4 @@
         - php
       state: absent
       update_cache: yes
-    when: ansible_distribution == "Red Hat"
+    when: ansible_distribution == "RedHat"

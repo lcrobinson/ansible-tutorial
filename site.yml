@@ -11,12 +11,34 @@
     when: ansible_distribution == "RedHat"
     tags: always
 
+  - name: Install Updates (Rocky)
+    dnf:
+      update_only: yes
+      update_cache: yes
+    when: ansible_distribution == "Rocky"
+    tags: always
+
   - name: Install Updates (Ubuntu)
     apt:
       upgrade: dist
       update_cache: yes
     when: ansible_distribution == "Ubuntu"
     tags: always
+
+  - name: Install Updates (Debian)
+    apt:
+      upgrade: dist
+      update_cache: yes
+    when: ansible_distribution == "Debian"
+    tags: always
+
+  - name: Install Updates (Linux Mint)
+    apt:
+      upgrade: dist
+      update_cache: yes
+    when: ansible_distribution == "Linux Mint"
+    tags: always
+
 - hosts: workstations
   become: true
   tasks:
@@ -32,34 +54,55 @@
       owner: root
       group: root
       mode: 0755
-      
+
 - hosts: web_servers
   become: true
-  tasks: 
+  tasks:
 
   - name: Install Apache and PHP for Red Hat Servers
-    tags: apache,redhat, httpd
+    tags: apache,redhat,httpd
     dnf:
-      name: 
+      name:
         - httpd
         - php
-        - php-pdo 
+        - php-pdo
         - php-gd
         - php-mbstring
       state: latest
     when: ansible_distribution == "RedHat"
 
+  - name: Install Apache and PHP for Rocky Servers
+    tags: apache,redhat,httpd
+    dnf:
+      name:
+        - httpd
+        - php
+        - php-pdo
+        - php-gd
+        - php-mbstring
+      state: latest
+    when: ansible_distribution == "Rocky"
+
   - name: Install Apache and PHP for Ubuntu Servers
     tags: apache,apache2,ubuntu
-    dnf:
-      name: 
+    apt:
+      name:
         - apache2
         - libapache2-mod-php
       state: latest
     when: ansible_distribution == "Ubuntu"
 
+  - name: Install Apache and PHP for Debian Servers
+    tags: apache,apache2,ubuntu
+    apt:
+      name:
+        - apache2
+        - libapache2-mod-php
+      state: latest
+    when: ansible_distribution == "Debian"
+
   - name: Copy default html file for site
-    tags: apache,apache2,httpd
+    tags: apache,apache2,debian
     copy:
       src: default_site.html
       dest: /var/www/html/index.html
@@ -86,6 +129,14 @@
         - mariadb-server
       state: latest
     when: ansible_distribution == "Ubuntu"
+
+  - name: Install MariaDB package (Debian)
+    tags: db,mariadb,ubuntu
+    apt:
+      name: 
+        - mariadb-server
+      state: latest
+    when: ansible_distribution == "Debian"
 
 - hosts: file_servers
   become: true

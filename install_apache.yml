@@ -15,6 +15,16 @@
       update_cache: yes
     when: ansible_distribution == "Ubuntu"
 
+  - name: Install apache and php for Debian servers
+    apt:
+      name: 
+        - apache2
+        - libapache2-mod-php
+      state: latest
+      update_cache: yes
+
+    when: ansible_distribution == "Debian"
+
   - name: Install apache and php for Red Hat servers
     dnf:
       name: 
