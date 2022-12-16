@@ -1,12 +1,12 @@
 [web_servers]
 ROCKY9-LAB
-BADC05
+BADC05:2022
 
 [db_servers]
 BADC04
 
 [file_servers]
-RHCSA-LAB
+BADC07
 
 [workstations]
 BADC03

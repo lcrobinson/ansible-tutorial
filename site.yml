@@ -4,11 +4,32 @@
   become: true
   pre_tasks:
 
-  - name: Install Updates (Red Hat)
-    dnf:
-      update_only: yes
+  - name: Install Updates (Arch)
+    pacman:
+      upgrade: dist
       update_cache: yes
-    when: ansible_distribution == "RedHat"
+    when: ansible_distribution == "Archlinux"
+    tags: always
+
+  - name: Install Updates (Debian)
+    apt:
+      upgrade: dist
+      update_cache: yes
+    when: ansible_distribution == "Debian"
+    tags: always
+
+  - name: Install Updates (Kali)
+    apt:
+      upgrade: dist
+      update_cache: yes
+    when: ansible_distribution == "Kali GNU/Linux"
+    tags: always
+
+  - name: Install Updates (Mint)
+    apt:
+      upgrade: dist
+      update_cache: yes
+    when: ansible_distribution == "Linux Mint"
     tags: always
 
   - name: Install Updates (Rocky)
@@ -23,20 +44,6 @@
       upgrade: dist
       update_cache: yes
     when: ansible_distribution == "Ubuntu"
-    tags: always
-
-  - name: Install Updates (Debian)
-    apt:
-      upgrade: dist
-      update_cache: yes
-    when: ansible_distribution == "Debian"
-    tags: always
-
-  - name: Install Updates (Linux Mint)
-    apt:
-      upgrade: dist
-      update_cache: yes
-    when: ansible_distribution == "Linux Mint"
     tags: always
 
 - hosts: workstations
@@ -114,21 +121,13 @@
   become: true
   tasks:
 
-  - name: Install MariaDB package (Red Hat)
-    tags: redhat,db,mariadb
-    dnf:
-      name: 
+  - name: Install MariaDB package (Arch Linux)
+    tags: arch64,db,mariadb
+    pacman:
+      name:
         - mariadb
       state: latest
-    when: ansible_distribution == "RedHat"
-
-  - name: Install MariaDB package (Ubuntu)
-    tags: db,mariadb,ubuntu
-    apt:
-      name: 
-        - mariadb-server
-      state: latest
-    when: ansible_distribution == "Ubuntu"
+    when: ansible_distribution == "Archlinux"
 
   - name: Install MariaDB package (Debian)
     tags: db,mariadb,ubuntu
@@ -137,6 +136,30 @@
         - mariadb-server
       state: latest
     when: ansible_distribution == "Debian"
+
+  - name: Install MariaDB package (Kali GNU/Linux)
+    tags: arch64,db,mariadb
+    apt:
+      name:
+        - mariadb
+      state: latest
+    when: ansible_distribution == "Kali GNU/Linux"
+
+  - name: Install MariaDB package (Rocky Linux)
+    tags: arch64,db,mariadb
+    dnf:
+      name:
+        - mariadb
+      state: latest
+    when: ansible_distribution == "Rocky"
+
+  - name: Install MariaDB package (Ubuntu)
+    tags: db,mariadb,ubuntu
+    apt:
+      name:
+        - mariadb-server
+      state: latest
+    when: ansible_distribution == "Ubuntu"
 
 - hosts: file_servers
   become: true
