@@ -6,7 +6,7 @@
 
   - name: Install Updates (Arch)
     pacman:
-      upgrade: dist
+      upgrade: yes
       update_cache: yes
     when: ansible_distribution == "Archlinux"
     tags: always
@@ -30,6 +30,13 @@
       upgrade: dist
       update_cache: yes
     when: ansible_distribution == "Linux Mint"
+    tags: always
+
+  - name: Install Updates (Rhel8)
+    dnf:
+      update_only: yes
+      update_cache: yes
+    when: ansible_distribution == "RedHat"
     tags: always
 
   - name: Install Updates (Rocky)
@@ -141,7 +148,7 @@
     tags: arch64,db,mariadb
     apt:
       name:
-        - mariadb
+        - mariadb-server
       state: latest
     when: ansible_distribution == "Kali GNU/Linux"
 

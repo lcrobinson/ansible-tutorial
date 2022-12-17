@@ -7,6 +7,7 @@ BADC04
 
 [file_servers]
 BADC07
+RHCSA-LAB
 
 [workstations]
 BADC03:2022
