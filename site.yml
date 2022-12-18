@@ -161,7 +161,7 @@
     when: ansible_distribution == "Debian"
 
   - name: Install MariaDB package (Kali GNU/Linux)
-    tags: arch64,db,mariadb
+    tags: debian,db,mariadb
     apt:
       name:
         - mariadb-server
@@ -169,7 +169,7 @@
     when: ansible_distribution == "Kali GNU/Linux"
 
   - name: Install MariaDB package (Rocky Linux)
-    tags: arch64,db,mariadb
+    tags: kali64,db,mariadb
     dnf:
       name:
         - mariadb
