@@ -1,5 +1,6 @@
 [web_servers]
 ROCKY9-LAB
+BADC05:2022
 
 [db_servers]
 BADC04

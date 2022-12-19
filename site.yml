@@ -131,6 +131,22 @@
       state: latest
     when: ansible_distribution == "Debian"
 
+  - name: Change email address for webmaster
+    tags: httpd,rocky9,http
+    lineinfile:
+      path:  /etc/httpd/conf/httpd.conf
+      regexp: '^ServerAdmin'
+      line: ServerAdmin lcr297@email.vccs.edu
+    when: ansible_distribution == "Rocky"
+    register: httpd
+
+  - name: Restart httpd (Rocky)
+    tags: httpd,rocky9
+    service:
+      name: httpd
+      state: restarted
+    when: httpd.changed
+
   - name: Copy default html file for site
     tags: apache,apache2,debian
     copy:
