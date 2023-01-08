@@ -1,5 +1,5 @@
 [web_servers]
-ROCKY9-LAB
+BADC09
 BADC05:2022
 
 [db_servers]
@@ -8,7 +8,7 @@ BADC06
 
 [file_servers]
 BADC07
-RHCSA-LAB
+BADC08
 
 [workstations]
 BADC03:2022

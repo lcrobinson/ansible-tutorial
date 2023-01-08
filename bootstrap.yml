@@ -1,0 +1,77 @@
+---
+
+- hosts: all
+  become: true
+  pre_tasks:
+
+  - name: Install Updates (Arch)
+    pacman:
+      upgrade: yes
+      update_cache: yes
+    when: ansible_distribution == "Archlinux"
+    tags: always
+
+  - name: Install Updates (Debian)
+    apt:
+      upgrade: dist
+      update_cache: yes
+    when: ansible_distribution == "Debian"
+    tags: always
+
+  - name: Install Updates (Kali)
+    apt:
+      upgrade: dist
+      update_cache: yes
+    when: ansible_distribution == "Kali GNU/Linux"
+    tags: always
+
+  - name: Install Updates (Mint)
+    apt:
+      upgrade: dist
+      update_cache: yes
+    when: ansible_distribution == "Linux Mint"
+    tags: always
+
+  - name: Install Updates (Rhel8)
+    dnf:
+      update_only: yes
+      update_cache: yes
+    when: ansible_distribution == "RedHat"
+    tags: always
+
+  - name: Install Updates (Rocky)
+    dnf:
+      update_only: yes
+      update_cache: yes
+    when: ansible_distribution == "Rocky"
+    tags: always
+
+  - name: Install Updates (Ubuntu)
+    apt:
+      upgrade: dist
+      update_cache: yes
+    when: ansible_distribution == "Ubuntu"
+    tags: always
+
+- hosts: all
+  become: true
+  tasks:
+  - name: Create nafur-tech User
+    tags: always
+    user:
+      name: nafur-tech
+      group: root
+  - name: Add SSH Key for nafur-tech
+    tags: always
+    authorized_key:
+      user: nafur-tech
+      key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIENjMVh4FVONCCZ3owgYzLgfynm7m9hzlyPJMXZzC47+ Ansible key-pair for servers"
+
+  - name: Add sudoers file for nafur-tech
+    tags: always
+    copy:
+      src: sudoer_nafur-tech
+      dest: /etc/sudoers.d/
+      owner: root
+      group: root
+      mode: 0440

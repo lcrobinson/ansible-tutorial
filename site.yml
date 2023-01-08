@@ -4,54 +4,63 @@
   become: true
   pre_tasks:
 
-  - name: Install Updates (Arch)
+  - name: Update Repo Cache (Arch)
     pacman:
-      upgrade: yes
       update_cache: yes
+    changed_when: false
     when: ansible_distribution == "Archlinux"
     tags: always
 
-  - name: Install Updates (Debian)
+  - name: Update Repo Cache (debian)
     apt:
-      upgrade: dist
       update_cache: yes
+    changed_when: false
     when: ansible_distribution == "Debian"
     tags: always
 
-  - name: Install Updates (Kali)
+  - name: Update Repo Cache (Kali)
     apt:
-      upgrade: dist
       update_cache: yes
+    changed_when: false
     when: ansible_distribution == "Kali GNU/Linux"
     tags: always
 
-  - name: Install Updates (Mint)
+  - name: Update Repo Cache (Mint)
     apt:
-      upgrade: dist
       update_cache: yes
+    changed_when: false
     when: ansible_distribution == "Linux Mint"
     tags: always
 
-  - name: Install Updates (Rhel8)
+  - name: Update Repo Cache (Rhel8/9)
     dnf:
-      update_only: yes
       update_cache: yes
+    changed_when: false
     when: ansible_distribution == "RedHat"
     tags: always
 
-  - name: Install Updates (Rocky)
+  - name: Update Repo Cache (Rocky)
     dnf:
-      update_only: yes
       update_cache: yes
+    changed_when: false
     when: ansible_distribution == "Rocky"
     tags: always
 
-  - name: Install Updates (Ubuntu)
+  - name: Update Repo Cache (Ubuntu)
     apt:
-      upgrade: dist
       update_cache: yes
+    changed_when: false
     when: ansible_distribution == "Ubuntu"
     tags: always
+
+- hosts: all
+  become: true
+  tasks:
+  - name: Add SSH Key for nafur-tech
+    tags: always
+    authorized_key:
+      user: nafur-tech
+      key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIENjMVh4FVONCCZ3owgYzLgfynm7m9hzlyPJMXZzC47+ Ansible key-pair for servers"
 
 - hosts: workstations
   become: true
