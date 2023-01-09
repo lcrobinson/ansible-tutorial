@@ -1,0 +1,4 @@
+- name: Add SSH Key for nafur-tech
+  authorized_key:
+    user: nafur-tech
+    key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIENjMVh4FVONCCZ3owgYzLgfynm7m9hzlyPJMXZzC47+ Ansible key-pair for servers"

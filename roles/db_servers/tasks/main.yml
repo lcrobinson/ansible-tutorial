@@ -1,0 +1,39 @@
+- name: Install MariaDB package (Arch Linux)
+  tags: arch64,db,mariadb
+  pacman:
+    name:
+      - mariadb
+    state: latest
+  when: ansible_distribution == "Archlinux"
+
+- name: Install MariaDB package (Debian)
+  tags: db,mariadb,ubuntu
+  apt:
+    name: 
+      - mariadb-server
+    state: latest
+  when: ansible_distribution == "Debian"
+
+- name: Install MariaDB package (Kali GNU/Linux)
+  tags: debian,db,mariadb
+  apt:
+    name:
+      - mariadb-server
+    state: latest
+  when: ansible_distribution == "Kali GNU/Linux"
+
+- name: Install MariaDB package (Rocky Linux)
+  tags: kali64,db,mariadb
+  dnf:
+    name:
+      - mariadb
+    state: latest
+  when: ansible_distribution == "Rocky"
+
+- name: Install MariaDB package (Ubuntu)
+  tags: db,mariadb,ubuntu
+  apt:
+    name:
+      - mariadb-server
+    state: latest
+  when: ansible_distribution == "Ubuntu"
