@@ -55,166 +55,25 @@
 
 - hosts: all
   become: true
-  tasks:
-  - name: Add SSH Key for nafur-tech
-    tags: always
-    authorized_key:
-      user: nafur-tech
-      key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIENjMVh4FVONCCZ3owgYzLgfynm7m9hzlyPJMXZzC47+ Ansible key-pair for servers"
+  roles:
+    - base
 
 - hosts: workstations
   become: true
-  tasks:
-  - name: Install unzip
-    package:
-      name: unzip
-
-  - name: Install terraform
-    unarchive:
-      src: https://releases.hashicorp.com/terraform/1.3.4/terraform_1.3.4_linux_amd64.zip
-      dest: /usr/local/bin
-      remote_src: yes
-      owner: root
-      group: root
-      mode: 0755
+  roles:
+    - workstations
 
 - hosts: web_servers
   become: true
-  tasks:
-
-  - name: Install Apache and PHP for Red Hat Servers
-    tags: apache,redhat,httpd
-    dnf:
-      name:
-        - httpd
-        - php
-        - php-pdo
-        - php-gd
-        - php-mbstring
-      state: latest
-    when: ansible_distribution == "RedHat"
-
-  - name: Install Apache and PHP for Rocky Servers
-    tags: apache,redhat,httpd
-    dnf:
-      name:
-        - httpd
-        - php
-        - php-pdo
-        - php-gd
-        - php-mbstring
-      state: latest
-    when: ansible_distribution == "Rocky"
-
-  - name: Start httpd (Rhel8)
-    tags: apache,rhel,httpd
-    service:
-      name: httpd
-      state: started
-      enabled: yes
-    when: ansible_distribution == "RedHat"
-
-  - name: Start httpd (Rocky9)
-    tags: apache,rocky,httpd
-    service:
-      name: httpd
-      state: started
-      enabled: yes
-    when: ansible_distribution == "Rocky"
-
-  - name: Install Apache and PHP for Ubuntu Servers
-    tags: apache,apache2,ubuntu
-    apt:
-      name:
-        - apache2
-        - libapache2-mod-php
-      state: latest
-    when: ansible_distribution == "Ubuntu"
-
-  - name: Install Apache and PHP for Debian Servers
-    tags: apache,apache2,ubuntu
-    apt:
-      name:
-        - apache2
-        - libapache2-mod-php
-      state: latest
-    when: ansible_distribution == "Debian"
-
-  - name: Change email address for webmaster
-    tags: httpd,rocky9,http
-    lineinfile:
-      path:  /etc/httpd/conf/httpd.conf
-      regexp: '^ServerAdmin'
-      line: ServerAdmin lcr297@email.vccs.edu
-    when: ansible_distribution == "Rocky"
-    register: httpd
-
-  - name: Restart httpd (Rocky)
-    tags: httpd,rocky9
-    service:
-      name: httpd
-      state: restarted
-    when: httpd.changed
-
-  - name: Copy default html file for site
-    tags: apache,apache2,debian
-    copy:
-      src: default_site.html
-      dest: /var/www/html/index.html
-      owner: root
-      group: root
-      mode: 0644
+  roles:
+    - web_servers
 
 - hosts: db_servers
   become: true
-  tasks:
-
-  - name: Install MariaDB package (Arch Linux)
-    tags: arch64,db,mariadb
-    pacman:
-      name:
-        - mariadb
-      state: latest
-    when: ansible_distribution == "Archlinux"
-
-  - name: Install MariaDB package (Debian)
-    tags: db,mariadb,ubuntu
-    apt:
-      name: 
-        - mariadb-server
-      state: latest
-    when: ansible_distribution == "Debian"
-
-  - name: Install MariaDB package (Kali GNU/Linux)
-    tags: debian,db,mariadb
-    apt:
-      name:
-        - mariadb-server
-      state: latest
-    when: ansible_distribution == "Kali GNU/Linux"
-
-  - name: Install MariaDB package (Rocky Linux)
-    tags: kali64,db,mariadb
-    dnf:
-      name:
-        - mariadb
-      state: latest
-    when: ansible_distribution == "Rocky"
-
-  - name: Install MariaDB package (Ubuntu)
-    tags: db,mariadb,ubuntu
-    apt:
-      name:
-        - mariadb-server
-      state: latest
-    when: ansible_distribution == "Ubuntu"
+  roles:
+    - db_servers
 
 - hosts: file_servers
   become: true
-  tasks:
-
-  - name: Install Samba package on File Servers
-    tags: samba
-    package:
-      name: samba
-      state: latest
+  roles:
+    - file_servers
