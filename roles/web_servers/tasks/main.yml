@@ -1,60 +1,26 @@
 - name: Install Apache and PHP for Red Hat Servers
   tags: apache,redhat,httpd
-  dnf:
+  package:
     name:
-      - httpd
-      - php
-      - php-pdo
-      - php-gd
-      - php-mbstring
+      - "{{ apache_package_name }}"
+      - "{{ php_package_name }}"
     state: latest
-  when: ansible_distribution == "RedHat"
 
-- name: Install Apache and PHP for Rocky Servers
-  tags: apache,redhat,httpd
-  dnf:
-    name:
-      - httpd
-      - php
-      - php-pdo
-      - php-gd
-      - php-mbstring
-    state: latest
-  when: ansible_distribution == "Rocky"
-
-- name: Start httpd (Rhel8)
-  tags: apache,rhel,httpd
-  service:
-    name: httpd
+- name: Start and Enable apache service
+  tags: apache,httpd
+  service: 
+    name: "{{ apache_service }}"
     state: started
     enabled: yes
-  when: ansible_distribution == "RedHat"
 
-- name: Start httpd (Rocky9)
-  tags: apache,rocky,httpd
-  service:
-    name: httpd
-    state: started
-    enabled: yes
+- name: Change e-mail address for admin
+  tags: apache,centos,httpd
+  lineinfile:
+    path: /etc/httpd/conf/httpd.conf
+    regex: '^ServerAdmin'
+    line: ServerAdmin nafur-tech@basedeep.net
   when: ansible_distribution == "Rocky"
-
-- name: Install Apache and PHP for Ubuntu Servers
-  tags: apache,apache2,ubuntu
-  apt:
-    name:
-      - apache2
-      - libapache2-mod-php
-    state: latest
-  when: ansible_distribution == "Ubuntu"
-
-- name: Install Apache and PHP for Debian Servers
-  tags: apache,apache2,ubuntu
-  apt:
-    name:
-      - apache2
-      - libapache2-mod-php
-    state: latest
-  when: ansible_distribution == "Debian"
+  notify: restart_apache
 
 - name: Copy default html file for site
   tags: apache,apache2,debian
