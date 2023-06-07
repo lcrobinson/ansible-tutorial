@@ -1,14 +1,14 @@
 [web_servers]
-BADC09
-BADC05:2022
+badc09
+badc05:2022
 
 [db_servers]
-BADC04
-BADC06
+badc04
+badc06
 
 [file_servers]
-BADC07
-BADC08
+badc07
+badc08
 
 [workstations]
-BADC03:2022
+badc03:2022
